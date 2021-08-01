@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <script>
+    window.onload = function () {
+
+      var dps = []; // dataPoints
+      var chart = new CanvasJS.Chart("chartContainer", {
+        title: {
+          text: "Dynamic Data"
+        },
+        data: [{
+          type: "line",
+          dataPoints: dps
+        }]
+      });
+
+      function addData(data) {
+        data = data.values;
+        console.log(data.length);
+        console.log(dps.length);
+
+        if (dps.length != data.length) {
+          for (var i = dps.length; i < data.length; i++) {
+            dps.push({
+              x: new Date(data[i].time),
+              y: parseFloat(data[i].hum)
+            });
+          }
+          chart.render();
+        }
+
+      }
+
+      function updateChart() {
+        $.getJSON("http://localhost:8087/sensor", addData);
+
+      }
+
+
+
+      updateChart();
+      setInterval(function () {
+        updateChart()
+      }, 2000);
+
+    }
+  </script>
+</head>
+
+<body>
+  <div id="chartContainer" style="height: 370px; width:100%;"></div>
+  <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+
+  <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</body>
+
+</html>
