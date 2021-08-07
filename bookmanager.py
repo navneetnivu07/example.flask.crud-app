@@ -35,10 +35,10 @@ class User(db.Model):
 class Sensor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     hum = db.Column(db.String(10), unique=False)
-    # temp = db.Float(db.Float, nullable=True, unique=False)
-    # co = db.Float(db.Float, nullable=True, unique=False)
-    # tvoc = db.Float(db.Float, nullable=True, unique=False)
-    # vib = db.Float(db.Float, nullable=True, unique=False)
+    temp = db.Column(db.String(10), unique=False)
+    co = db.Column(db.String(10), unique=False)
+    tvoc = db.Column(db.String(10), unique=False)
+    vib = db.Column(db.String(10), unique=False)
     time = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)    
 
     def __repr__(self):
@@ -48,6 +48,10 @@ class Sensor(db.Model):
         return {
             'id': self.id,
             'hum': self.hum,
+            'temp': self.temp,
+            'co': self.co,
+            'tvoc': self.tvoc,
+            'vib': self.vib,
             'time': self.time,
         }
 
@@ -56,9 +60,11 @@ def sensor():
     sensor_val = None
     if request.form:
         try:
-            sen = Sensor(hum=float(request.form.get("hum")))
-            print("%%%%%%%%")
-            print(request.form.get("hum"))
+            sen = Sensor(hum=float(request.form.get("hum")), 
+            co=float(request.form.get("co")), 
+            temp=float(request.form.get("temp")), 
+            tvoc=float(request.form.get("tvoc")), 
+            vib=float(request.form.get("vib")))
             db.session.add(sen)
             db.session.commit()
         except Exception as e:

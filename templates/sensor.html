@@ -5,30 +5,94 @@
   <script>
     window.onload = function () {
 
-      var dps = []; // dataPoints
-      var chart = new CanvasJS.Chart("chartContainer", {
+      var dpsHum = []; // dataPoints
+      var dpsTemp = []; // dataPoints
+      var dpsCo = []; // dataPoints
+      var dpsTvoc= []; // dataPoints
+      var dpsVi = []; // dataPoints
+
+      var chart1 = new CanvasJS.Chart("humContainer", {
         title: {
-          text: "Dynamic Data"
+          text: "Humidity Data"
         },
         data: [{
           type: "line",
-          dataPoints: dps
+          dataPoints: dpsHum
+        }]
+      });
+
+      var chart2 = new CanvasJS.Chart("tempContainer", {
+        title: {
+          text: "Temperature Data"
+        },
+        data: [{
+          type: "line",
+          dataPoints: dpsTemp
+        }]
+      });
+
+      var chart3 = new CanvasJS.Chart("coContainer", {
+        title: {
+          text: "Co2 Data"
+        },
+        data: [{
+          type: "line",
+          dataPoints: dpsCo
+        }]
+      });
+
+      var chart4 = new CanvasJS.Chart("tvocContainer", {
+        title: {
+          text: "TVOC Data"
+        },
+        data: [{
+          type: "line",
+          dataPoints: dpsTvoc
+        }]
+      });
+
+      var chart5 = new CanvasJS.Chart("viContainer", {
+        title: {
+          text: "Vibration Data"
+        },
+        data: [{
+          type: "line",
+          dataPoints: dpsVi
         }]
       });
 
       function addData(data) {
         data = data.values;
-        console.log(data.length);
-        console.log(dps.length);
 
-        if (dps.length != data.length) {
-          for (var i = dps.length; i < data.length; i++) {
-            dps.push({
+        if (dpsHum.length != data.length) {
+          for (var i = dpsHum.length; i < data.length; i++) {
+            dpsHum.push({
               x: new Date(data[i].time),
               y: parseFloat(data[i].hum)
             });
+            dpsTemp.push({
+              x: new Date(data[i].time),
+              y: parseFloat(data[i].temp)
+            });
+            dpsCo.push({
+              x: new Date(data[i].time),
+              y: parseFloat(data[i].co)
+            });
+            dpsTvoc.push({
+              x: new Date(data[i].time),
+              y: parseFloat(data[i].tvoc)
+            });
+            dpsVi.push({
+              x: new Date(data[i].time),
+              y: parseFloat(data[i].vib)
+            });
           }
-          chart.render();
+          chart1.render();
+          chart2.render();
+          chart3.render();
+          chart4.render();
+          chart5.render();
+
         }
 
       }
@@ -50,7 +114,12 @@
 </head>
 
 <body>
-  <div id="chartContainer" style="height: 370px; width:100%;"></div>
+  <div id="humContainer" style="height: 370px; width:100%;"></div>
+  <div id="tempContainer" style="height: 370px; width:100%;"></div>
+  <div id="coContainer" style="height: 370px; width:100%;"></div>
+  <div id="tvocContainer" style="height: 370px; width:100%;"></div>
+  <div id="viContainer" style="height: 370px; width:100%;"></div>
+
   <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
 
   <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
